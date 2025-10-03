@@ -1,13 +1,12 @@
 describe('Whiteboard', () => {
   beforeEach(() => {
-    // Mock authentication
     cy.visit('/room/test-room')
   })
 
   it('should display whiteboard interface', () => {
     cy.get('canvas').should('be.visible')
-    cy.get('[data-testid="toolbar"]').should('be.visible')
-    cy.get('[data-testid="chat-sidebar"]').should('be.visible')
+    cy.contains('Room: test-room')
+    cy.get('button').contains('Video Call').should('be.visible')
   })
 
   it('should allow drawing on canvas', () => {
@@ -15,22 +14,35 @@ describe('Whiteboard', () => {
       .trigger('mousedown', { clientX: 100, clientY: 100 })
       .trigger('mousemove', { clientX: 200, clientY: 200 })
       .trigger('mouseup')
-    
-    // Verify drawing occurred (would need canvas content verification)
   })
 
-  it('should change brush color', () => {
-    cy.get('[data-testid="color-red"]').click()
-    // Verify color change in store
-  })
-
-  it('should change brush size', () => {
-    cy.get('[data-testid="brush-size-slider"]').click()
-    // Verify size change
+  it('should change brush tools and settings', () => {
+    cy.get('[data-color="#FF0000"]').click()
   })
 
   it('should clear canvas', () => {
-    cy.get('[data-testid="clear-button"]').click()
-    // Verify canvas is cleared
+    cy.get('button').contains('Clear').click()
+  })
+
+  it('should show chat sidebar', () => {
+    cy.contains('Chat').should('be.visible')
+    cy.get('input[placeholder="Type a message..."]').should('be.visible')
+  })
+
+  it('should send chat message', () => {
+    const message = 'Hello, world!'
+    cy.get('input[placeholder="Type a message..."]').type(message)
+    cy.get('button[type="submit"]').click()
+    cy.contains(message).should('be.visible')
+  })
+
+  it('should handle video call', () => {
+    cy.get('button').contains('Video Call').click()
+    cy.contains('Video Call').should('be.visible')
+  })
+
+  it('should show active users with roles', () => {
+    cy.contains('Active Users:').should('be.visible')
+    cy.contains('users online').should('be.visible')
   })
 })

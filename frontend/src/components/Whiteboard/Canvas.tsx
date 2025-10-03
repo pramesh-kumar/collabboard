@@ -63,6 +63,7 @@ export const Canvas: React.FC<CanvasProps> = ({ roomId }) => {
       tool: currentTool
     };
     
+    console.log('Drawing started:', drawingData);
     addDrawing(drawingData);
     draw(drawingData);
     socket?.emit('drawing', drawingData);
@@ -96,7 +97,10 @@ export const Canvas: React.FC<CanvasProps> = ({ roomId }) => {
   useEffect(() => {
     if (!socket) return;
 
+    console.log('Setting up canvas socket listeners...');
+
     socket.on('drawing', (drawingData: DrawingData) => {
+      console.log('Received drawing:', drawingData);
       draw(drawingData);
       addDrawing(drawingData);
     });
@@ -114,9 +118,22 @@ export const Canvas: React.FC<CanvasProps> = ({ roomId }) => {
       }
     });
 
+    socket.on('canvas-cleared', () => {
+      console.log('Canvas cleared event received');
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      setDrawings([]);
+    });
+
     return () => {
       socket.off('drawing');
       socket.off('canvas-state');
+      socket.off('canvas-cleared');
     };
   }, [socket, draw, addDrawing, setDrawings]);
 

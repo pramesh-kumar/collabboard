@@ -46,11 +46,15 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ roomId }) => {
   useEffect(() => {
     if (!socket) return;
 
+    console.log('Setting up chat socket listeners...');
+
     socket.on('message', (message: Message) => {
+      console.log('Received message:', message);
       setMessages(prev => [...prev, message]);
     });
 
     socket.on('chat-history', (history: Message[]) => {
+      console.log('Received chat history:', history);
       setMessages(history);
     });
 
@@ -72,6 +76,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ roomId }) => {
       timestamp: new Date()
     };
 
+    console.log('Sending message:', message);
     socket.emit('message', message);
     setNewMessage('');
   };

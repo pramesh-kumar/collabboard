@@ -121,6 +121,23 @@ io.on('connection', (socket) => {
     io.to(userInfo.roomId).emit('message', message);
   });
 
+  // WebRTC signaling events
+  socket.on('video-offer', (data) => {
+    socket.to(data.roomId).emit('video-offer', data);
+  });
+
+  socket.on('video-answer', (data) => {
+    socket.to(data.roomId).emit('video-answer', data);
+  });
+
+  socket.on('ice-candidate', (data) => {
+    socket.to(data.roomId).emit('ice-candidate', data);
+  });
+
+  socket.on('leave-video', (data) => {
+    socket.to(data.roomId).emit('user-left-video', data);
+  });
+
   socket.on('disconnect', () => {
     const userInfo = userRoles.get(socket.id);
     if (userInfo) {
@@ -136,6 +153,7 @@ io.on('connection', (socket) => {
         }));
         
         io.to(userInfo.roomId).emit('users-update', activeUsers);
+        socket.to(userInfo.roomId).emit('user-left-video', { userId: userInfo.userId });
         
         // Clean up empty rooms
         if (room.users.size === 0) {

@@ -9,12 +9,22 @@ export const useSocket = (roomId?: string) => {
   useEffect(() => {
     if (!user || !roomId) return;
 
+    console.log('Connecting to socket...', { roomId, userId: user.uid });
+    
     socketRef.current = io(import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001', {
-      auth: {
-        userId: user.uid,
-        userName: user.displayName || user.email,
-        roomId
-      }
+      transports: ['websocket', 'polling']
+    });
+
+    socketRef.current.on('connect', () => {
+      console.log('Socket connected:', socketRef.current?.id);
+    });
+
+    socketRef.current.on('disconnect', () => {
+      console.log('Socket disconnected');
+    });
+
+    socketRef.current.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
     });
 
     return () => {

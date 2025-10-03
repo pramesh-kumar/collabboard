@@ -56,63 +56,72 @@ export const Dashboard: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Welcome to CollabBoard
-        </Typography>
-        <Typography variant="body1" color="text.secondary" paragraph>
-          Create a new room or join an existing one to start collaborating.
-        </Typography>
+      <Container maxWidth="lg" sx={{ py: 4, minHeight: 'calc(100vh - 64px)' }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+            Welcome to CollabBoard
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
+            Create a new room or join an existing one to start collaborating in real-time.
+          </Typography>
+        </Box>
 
-        <Box sx={{ display: 'flex', gap: 3, mt: 2, flexWrap: 'wrap' }}>
-          <Box sx={{ flex: 1, minWidth: 300 }}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Create New Room
-                </Typography>
-                <Typography variant="body2" color="text.secondary" paragraph>
-                  Start a new collaborative whiteboard session
-                </Typography>
-                <Button
-                  variant="contained"
-                  startIcon={<Add />}
-                  onClick={createRoom}
-                  fullWidth
-                >
-                  Create Room
-                </Button>
-              </CardContent>
-            </Card>
-          </Box>
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+          gap: 4,
+          maxWidth: 800,
+          mx: 'auto'
+        }}>
+          <Card elevation={3} sx={{ height: 'fit-content' }}>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                Create New Room
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                Start a new collaborative whiteboard session
+              </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<Add />}
+                onClick={createRoom}
+                fullWidth
+                sx={{ py: 1.5 }}
+              >
+                Create Room
+              </Button>
+            </CardContent>
+          </Card>
 
-          <Box sx={{ flex: 1, minWidth: 300 }}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Join Room
-                </Typography>
-                <Typography variant="body2" color="text.secondary" paragraph>
-                  Enter room ID to join existing session
-                </Typography>
-                <TextField
-                  fullWidth
-                  label="Room ID"
-                  value={joinRoomId}
-                  onChange={(e) => setJoinRoomId(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={joinRoom}
-                  fullWidth
-                  disabled={!joinRoomId.trim()}
-                >
-                  Join Room
-                </Button>
-              </CardContent>
-            </Card>
-          </Box>
+          <Card elevation={3} sx={{ height: 'fit-content' }}>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                Join Room
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                Enter room ID to join existing session
+              </Typography>
+              <TextField
+                fullWidth
+                label="Room ID"
+                value={joinRoomId}
+                onChange={(e) => setJoinRoomId(e.target.value)}
+                sx={{ mb: 3 }}
+                size="medium"
+              />
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={joinRoom}
+                fullWidth
+                disabled={!joinRoomId.trim()}
+                sx={{ py: 1.5 }}
+              >
+                Join Room
+              </Button>
+            </CardContent>
+          </Card>
         </Box>
       </Container>
     </>

@@ -38,6 +38,7 @@ A modern, real-time collaborative whiteboard application built with React, TypeS
 ### Prerequisites
 - Node.js 18+
 - Firebase project (free tier)
+- Modern web browser with WebRTC support
 
 ### 1. Clone and Install
 
@@ -100,14 +101,29 @@ Visit `http://localhost:5173` to use the application.
 3. **Join Room**: Enter room ID to join existing session
 4. **Draw**: Use brush tools to draw on the canvas
 5. **Chat**: Communicate with other users in real-time
-6. **Roles**: First user becomes admin, others are editors by default
+6. **Video Call**: Start peer-to-peer video calls with room participants
+7. **Roles**: First user becomes admin, others are editors by default
+
+### Drawing Tools
+- **Brush**: Draw with customizable color and size
+- **Eraser**: Remove drawings from canvas
+- **Clear**: Admin/Editor can clear entire canvas
+- **Color Palette**: 7 preset colors available
+- **Size Slider**: Adjust brush/eraser size (1-20px)
+
+### User Roles
+- **Admin**: Full access (first user in room)
+- **Editor**: Can draw, chat, and use video calls
+- **Viewer**: Can only view and chat
 
 ## Testing
 
 ### Unit Tests
 ```bash
 cd frontend
-npm test
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # Coverage report
 ```
 
 ### E2E Tests
@@ -117,6 +133,15 @@ npm run cypress:open  # Interactive mode
 npm run cypress:run   # Headless mode
 ```
 
+### Test Coverage
+- Authentication flow
+- Room creation and joining
+- Real-time drawing synchronization
+- Chat functionality
+- Role-based access control
+- Video calling features
+- Canvas operations (draw, erase, clear)
+
 ## Deployment
 
 ### Frontend (Vercel)
@@ -124,8 +149,8 @@ npm run cypress:run   # Headless mode
 2. Set environment variables in Vercel dashboard
 3. Deploy automatically on push
 
-### Backend (Railway/Render)
-1. Connect repository to Railway or Render
+### Backend (Render)
+1. Connect repository to Render
 2. Set environment variables
 3. Deploy with automatic builds
 
@@ -151,10 +176,13 @@ npm run cypress:run   # Headless mode
 ## Performance Optimizations
 
 - Lazy loading of components
-- Canvas drawing optimization
-- Efficient re-renders with Zustand
-- Tree-shaking with Vite
+- Canvas drawing optimization with requestAnimationFrame
+- Efficient re-renders with Zustand state management
+- Tree-shaking with Vite build tool
 - Material UI component optimization
+- WebRTC peer-to-peer connections (no server relay)
+- Socket.IO event batching for drawing data
+- Optimized canvas rendering with context reuse
 
 ## Contributing
 

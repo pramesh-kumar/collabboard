@@ -14,10 +14,14 @@ import {
   Delete
 } from '@mui/icons-material';
 import { useWhiteboardStore } from '../../stores/whiteboardStore';
+import { useSocket } from '../../hooks/useSocket';
+import { useParams } from 'react-router-dom';
 
 const colors = ['#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
 
 export const Toolbar: React.FC = () => {
+  const { roomId } = useParams<{ roomId: string }>();
+  const socket = useSocket(roomId);
   const {
     currentTool,
     brushColor,
@@ -27,6 +31,17 @@ export const Toolbar: React.FC = () => {
     setBrushSize,
     clearCanvas
   } = useWhiteboardStore();
+
+  const handleClearCanvas = () => {
+    console.log('Clear button clicked');
+    clearCanvas();
+    if (socket) {
+      console.log('Emitting clear-canvas event');
+      socket.emit('clear-canvas');
+    } else {
+      console.log('No socket connection');
+    }
+  };
 
   return (
     <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
@@ -84,7 +99,7 @@ export const Toolbar: React.FC = () => {
         <Button
           variant="outlined"
           startIcon={<Delete />}
-          onClick={clearCanvas}
+          onClick={handleClearCanvas}
           color="error"
         >
           Clear
